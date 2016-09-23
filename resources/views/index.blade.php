@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="TVction">
+    <meta name="description" content="Plataforma de negociação de mercadorias">
 
 <!--    <link rel="icon" href="img/ico.jpg">-->
     <link href="css/material-design-iconic-font.css" rel="stylesheet">
