@@ -29,24 +29,35 @@
         var email = $('#register-email').val();
         var account = $('#register-account').val();
         var img = $('#select-img').val();
-      
+        var validateEmail = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/; // Regular Expression for Email Format 
+        var validateAccount = /^\d+(\.\d{1,2})?$/; // Regular Expression for Decimal with precision of 2
+  
         if(name && email && account){
-          $.post("/registeruser", { // Post the data to the route
-              name: name,
-              email: email,
-              account: account,
-              img: img
-          }, function(data){
-              if(!data){
-                $('#modal1').closeModal();
-                Materialize.toast('Registrado com Sucesso!', 4000);
-                location.reload();   
-              }else{
-                  Materialize.toast(data, 2000);
-              }        
-          });    
+          if(validateEmail.test(email)){ // Validate de email
+            if(validateAccount.test(account)){ // Validate the account(Decimal with precision of 2)
+              $.post("/registeruser", { // Post the data to the route
+                name: name,
+                email: email,
+                account: account,
+                img: img
+              }, function(data){
+                if(!data){
+                  $('#modal1').closeModal();
+                  Materialize.toast('Registrado com Sucesso!', 4000);
+                  location.reload();   
+                }else{
+                    Materialize.toast(data, 2000);
+                }        
+              }); 
+            }else{
+              Materialize.toast('Saldo Inválido!', 2000);
+            }
+            
+          }else{
+            Materialize.toast('Email Inválido!', 2000);
+          }   
         }else{
-            Materialize.toast('Preencha os Campos Vazios!', 2000);
+            Materialize.toast('Preencha os Campos Vazios ou Incorretos!', 2000);
         }                   
      });
     
@@ -58,20 +69,30 @@
       var quantity = $('#quantity').val();
       var price = $('#price').val();
       var businessType = $('#select-type').val();
+      var validateInteger = /^[1-9]\d*$/; // Regular Expression for positive integer excluding 0 
+      var validatePrice = /^\d+(\.\d{1,2})?$/; // Regular Expression for Decimal with precision of 2
       
       if(name && productType && quantity && price && businessType){
-        $.post("/registerproduct", { // Post the data to the route
-          name: name,
-          productType: productType, 
-          quantity: quantity,
-          price: price, 
-          businessType: businessType
-        }, function(data){
-            Materialize.toast('Registrado com Sucesso!', 2000);
-            location.reload();    
-        });  
+        if(validateInteger.test(quantity)){ // Validate the quantity of items (positive integer excluding 0 )
+          if(validatePrice.test(price)){ // Validate the price (Decimal with precision of 2)
+            $.post("/registerproduct", { // Post the data to the route
+              name: name,
+              productType: productType, 
+              quantity: quantity,
+              price: price, 
+              businessType: businessType
+            }, function(data){
+                Materialize.toast('Registrado com Sucesso!', 2000);
+                location.reload();    
+            });  
+          }else{
+            Materialize.toast('Preço Inválido!', 2000);
+          }
+        }else{
+          Materialize.toast('Quantidade Inválida!', 2000);
+        }
        }else{
-            Materialize.toast('Preencha os Campos Vazios!', 2000);
+            Materialize.toast('Preencha os Campos Vazios ou Incorretos!', 2000);
         } 
      });
     
@@ -86,8 +107,8 @@
       var userAcount = $('#account').html();
       var businessType = $('#businessType').html();
 
-      if(items <= quantity && items > 0){
-        if((total > userAcount) && (businessType == "Venda") ){
+      if(items <= quantity && items > 0){ // Check if all the values were typed
+        if((total > userAcount) && (businessType == "Venda") ){ // Check if the user has enought money
           Materialize.toast('Você não tem saldo suficiente!', 2000);
         }else{
           $.post("/registeraction", { // Post the data to the route
@@ -103,6 +124,5 @@
             Materialize.toast('Campo Vazio ou Incorreto!', 2000);
         } 
      });
-
   }); // end of document ready
 })(jQuery); // end of jQuery name space

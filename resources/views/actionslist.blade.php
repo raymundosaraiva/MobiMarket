@@ -11,7 +11,7 @@
       <ul class="collection hoverable">
           @foreach($actions as $action)
           <li class="collection-item avatar filter">
-            @if($action->businessType == "Venda")
+            @if($action->type == "Vendeu")
             <i class="circle green">{{$action->id}}</i>
             @else
             <i class="circle blue">{{$action->id}}</i>

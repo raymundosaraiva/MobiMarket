@@ -28,10 +28,10 @@
       <ul class="collection hoverable">
           @foreach($products as $product)
           <li class="collection-item avatar filter">
-            @if($product->businessType == "Venda")
+            @if($product->quantity == 0)
+            <i class="circle red">{{$product->id}}</i> [FINALIZADO] 
+            @elseif($product->businessType == "Venda")
             <i class="circle green">{{$product->id}}</i>
-            @elseif($product->quantity == 0)
-            <i class="circle red">{{$product->id}}</i> [FINALIZADO]
             @else($product->businessType == "Compra")
             <i class="circle blue">{{$product->id}}</i>
             @endif

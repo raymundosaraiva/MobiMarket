@@ -11,10 +11,6 @@
 |
 */
 
-Route::get('/newproduct', function () {
-    return view('newproduct');
-});
-
 Route::get('/logout', function() {
     Session::flush();
     return Redirect::guest("/");
@@ -23,6 +19,8 @@ Route::get('/logout', function() {
 Route::get('/', 'BaseController@getIndex');
 
 Route::get('/products', 'BaseController@showProducts'); 
+
+Route::get('/newproduct', 'BaseController@newProduct'); 
 
 Route::get('/actionslist', 'BaseController@actionsList'); 
 

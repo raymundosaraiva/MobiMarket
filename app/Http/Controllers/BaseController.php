@@ -46,6 +46,12 @@ class BaseController extends Controller{
     return view('productslist', ['products' => $products]);
   }
   
+  public function newProduct(){ // Get the Id for the new Product
+    $cod = Product::all()->last()->id + 1; 
+        
+    return view('newproduct', ['cod' => $cod]);
+  }
+  
   public function getProduct($cod){ // Get the product information informed by its id
     $product = Product::where('id', $cod)->first();  
     $user = User::where('id',$product->userId)->first();
@@ -62,10 +68,10 @@ class BaseController extends Controller{
       $product = Product::where('id', $action->productId)->first();  // Get the product information by its id
       $action->name = $product->name;
       if($userId == $product->userId){ // If the current user is the same as the product user
-        $action->type = ($product->businessType == "Vender") ? "Vendeu":"Comprou";
+        $action->type = ($product->businessType == "Venda") ? "Vendeu":"Comprou";
         $user = User::where('id',$action->userId)->first();
       } else{
-        $action->type = ($product->businessType == "Vender") ? "Comprou":"Vendeu";
+        $action->type = ($product->businessType == "Venda") ? "Comprou":"Vendeu";
         $user = User::where('id',$product->userId)->first();
       }
       
